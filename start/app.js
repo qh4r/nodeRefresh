@@ -9,6 +9,10 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
+// encodeURIComponent useful for sending data in url
+const urlData = encodeURIComponent("some message you want to send :F");
+console.log(urlData);
+
 //console.log(os.cpus());
 //console.log(os.endianness());
 
