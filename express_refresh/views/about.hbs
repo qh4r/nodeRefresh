@@ -1,0 +1,15 @@
+{{#>main title=title}}
+<h1>{{title}}</h1>
+<ul>
+  <!-- using list helper registered in server.js -->
+  {{#list data}}
+    <li>{{name}} --> {{amount}}</li>
+  {{/list}}
+  <hr>
+  <!--same result with built in helper -->
+  {{#each data}}
+    <li>{{name}} --> {{amount}}</li>
+  {{/each}}
+</ul>
+  {{> footer msg=title}}
+{{/main}}
