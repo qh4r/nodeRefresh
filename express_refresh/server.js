@@ -18,6 +18,13 @@ const app = express();
 
 app.set('view engine', 'hbs');
 
+//custom middleware - middlewares are piped
+app.use((req, res, next) => {
+  // bad practice but proves all is working
+  req.query.requestedAt =  new Date().toISOString();
+  next();
+});
+
 // static_page will be available at ...:3000/static_page.html
 app.use(express.static(path.join(__dirname, 'statics')));
 
@@ -43,6 +50,15 @@ app.get('/about', (req, res) => {
       {name: "rest", amount: 100},
     ]
   });
+});
+
+// another midleware that will only be hit if /json or /about are not
+app.use((req, res, next) => {
+  //throttles request
+  setTimeout(() => {
+    req.query.postDelay = new Date().toISOString();
+    next()
+  }, 1500);
 });
 
 // catch all not matching before

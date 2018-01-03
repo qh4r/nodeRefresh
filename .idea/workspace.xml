@@ -2,12 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f34a77e-69b6-40bb-9c6e-9febe1600be1" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/express_refresh/views/about.hbs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/express_refresh/views/partials/footer.hbs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/express_refresh/views/partials/main.hbs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/express_refresh/package-lock.json" afterPath="$PROJECT_DIR$/express_refresh/package-lock.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/express_refresh/package.json" afterPath="$PROJECT_DIR$/express_refresh/package.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/express_refresh/server.js" afterPath="$PROJECT_DIR$/express_refresh/server.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -36,11 +30,11 @@
       <file leaf-file-name="server.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/express_refresh/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="49" lean-forward="false" selection-start-line="11" selection-start-column="49" selection-end-line="11" selection-end-column="49" />
+            <state relative-caret-position="773">
+              <caret line="56" column="21" lean-forward="true" selection-start-line="56" selection-start-column="21" selection-end-line="56" selection-end-column="21" />
               <folding>
-                <marker date="1515006022000" expanded="true" signature="292:1246" ph="..." />
-                <marker date="1515006022000" expanded="true" signature="1348:1460" ph="..." />
+                <marker date="1515007711000" expanded="true" signature="292:1655" ph="..." />
+                <marker date="1515007711000" expanded="true" signature="1757:1869" ph="..." />
               </folding>
             </state>
           </provider>
@@ -230,12 +224,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1514042426267</updated>
-      <workItem from="1514042427797" duration="16615000" />
+      <workItem from="1514042427797" duration="17362000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16615000" />
+    <option name="totallyTimeSpent" value="17362000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-332" y="-1057" width="1920" height="1057" extended-state="6" />
@@ -355,11 +349,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/express_refresh/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="49" lean-forward="false" selection-start-line="11" selection-start-column="49" selection-end-line="11" selection-end-column="49" />
+        <state relative-caret-position="773">
+          <caret line="56" column="21" lean-forward="true" selection-start-line="56" selection-start-column="21" selection-end-line="56" selection-end-column="21" />
           <folding>
-            <marker date="1515006022000" expanded="true" signature="292:1246" ph="..." />
-            <marker date="1515006022000" expanded="true" signature="1348:1460" ph="..." />
+            <marker date="1515007711000" expanded="true" signature="292:1655" ph="..." />
+            <marker date="1515007711000" expanded="true" signature="1757:1869" ph="..." />
           </folding>
         </state>
       </provider>
