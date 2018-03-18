@@ -19,31 +19,33 @@ console.log("object id: ", new ObjectID());
     const db = client.db('todoList');
     console.log("connection ok ", db);
 
+    // uses mongodb update operators
     try {
       const result = await promisifyQuery((handler) => {
-        db.collection('Tasks').insertOne({
-          text: "stuff to do 5",
-          completed: false,
+        // if we did not use set object would end up with completed field and nothing else
+        db.collection('Tasks').findOneAndUpdate({completed: false}, {
+          $set: {completed: true}
+          }, {
+          returnOriginal: false // if this was not set mongo would return old object
         }, handler);
       });
 
-      console.log(JSON.stringify(result.ops, undefined, 2)); // ops contains returned object
+      console.log("TASKS remove: ",JSON.stringify(result, undefined, 2)); // ops contains returned object
     } catch (e) {
       console.error("something went wrong", err);
     }
 
+    // QUERYING WITH FILTER
     try {
       const result = await promisifyQuery((handler) => {
-        db.collection('Users').insertOne({
-          name: "Bart",
-          age: 24,
-          location: "USA"
-        }, handler);
+        // increment age on first item by 1,
+        // filter can not be null
+        db.collection('Users').findOneAndUpdate({}, {$inc: {age: 1}}, {returnOriginal: false}, handler);
       });
 
-      console.log(JSON.stringify(result.ops, undefined, 2)); // ops contains returned object
+      console.log("USERS: ", JSON.stringify(result, undefined, 2)); // ops contains returned object
     } catch (e) {
-      console.error("something went wrong", err);
+      console.error("something went wrong", e);
     }
 
     client.close();

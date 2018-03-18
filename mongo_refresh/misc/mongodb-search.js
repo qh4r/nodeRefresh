@@ -21,27 +21,21 @@ console.log("object id: ", new ObjectID());
 
     try {
       const result = await promisifyQuery((handler) => {
-        db.collection('Tasks').insertOne({
-          text: "stuff to do 5",
-          completed: false,
-        }, handler);
+        db.collection('Tasks').find(null, handler);
       });
 
-      console.log(JSON.stringify(result.ops, undefined, 2)); // ops contains returned object
+      console.log("TASKS: ",JSON.stringify(await result.toArray(), undefined, 2)); // ops contains returned object
     } catch (e) {
       console.error("something went wrong", err);
     }
 
+    // QUERYING WITH FILTER
     try {
       const result = await promisifyQuery((handler) => {
-        db.collection('Users').insertOne({
-          name: "Bart",
-          age: 24,
-          location: "USA"
-        }, handler);
+        db.collection('Users').find({location: 'poland'}, handler);
       });
 
-      console.log(JSON.stringify(result.ops, undefined, 2)); // ops contains returned object
+      console.log("USERS: ", JSON.stringify(await result.toArray(), undefined, 2)); // ops contains returned object
     } catch (e) {
       console.error("something went wrong", err);
     }

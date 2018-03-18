@@ -19,29 +19,25 @@ console.log("object id: ", new ObjectID());
     const db = client.db('todoList');
     console.log("connection ok ", db);
 
+    //delete many -- can use deleteOne to delete first elemnt
     try {
       const result = await promisifyQuery((handler) => {
-        db.collection('Tasks').insertOne({
-          text: "stuff to do 5",
-          completed: false,
-        }, handler);
+        db.collection('Tasks').deleteMany({text: /.*stuff.*/}, handler);
       });
 
-      console.log(JSON.stringify(result.ops, undefined, 2)); // ops contains returned object
+      console.log("TASKS remove: ",JSON.stringify(await result, undefined, 2)); // ops contains returned object
     } catch (e) {
       console.error("something went wrong", err);
     }
 
+    // QUERYING WITH FILTER
     try {
       const result = await promisifyQuery((handler) => {
-        db.collection('Users').insertOne({
-          name: "Bart",
-          age: 24,
-          location: "USA"
-        }, handler);
+        // find one and delete returns deleted element (in opposite to delete one)
+        db.collection('Users').findOneAndDelete({location: 'USA'}, handler);
       });
 
-      console.log(JSON.stringify(result.ops, undefined, 2)); // ops contains returned object
+      console.log("USERS: ", JSON.stringify(await result, undefined, 2)); // ops contains returned object
     } catch (e) {
       console.error("something went wrong", err);
     }
