@@ -2,54 +2,103 @@ const {promisify} = require('util');
 const {mongoose} = require('./db/db');
 const User = require('./models/user');
 const Task = require('./models/task');
-
-process.on('uncaughtException', (err) => {
-  process.exit(1);
-});
-
-process.on('unhandledRejection', (err) => {
-  process.exit(1);
-});
-
 const express = require('express');
+const ObjectId = require('mongoose').Types.ObjectId;
 
-const PORT = 3000;
+function appFactory() {
+  const app = express();
 
-const app = express();
+  app.use(express.json());
 
-app.use(express.json());
+  app.post('/tasks', async (req, res, next) => {
+    try {
+      const task = new Task({
+        text: req.body.text
+      });
+      const result = await task.save();
+      return res.json({
+        ...result.toJSON(),
+      })
+    }
+    catch (e) {
+      next({
+        status: 403,
+        message: e.message,
+      });
+    }
+  });
 
-app.post('/tasks', async (req, res, next) => {
-  try {
-    const task = new Task({
-      text: req.body.text
-    });
-    const result = await task.save();
-    return res.json({
-      ...result.toJSON(),
+  app.get('/tasks', (req, res, next) => {
+    Task.find({})
+        .then(tasks => {
+          res.json(tasks);
+        })
+        .catch(next);
+  });
+
+  app.param('taskId', async (req, res, next, taskId) => {
+    try {
+      if (!ObjectId.isValid(taskId)) {
+        next({
+          status: 403,
+          message: "id is not valid",
+        })
+      }
+      ;
+      const result = await Task.where({_id: taskId}).findOne();
+      if (result) {
+        req.task = result;
+        return next();
+      }
+      return next({
+        status: 404,
+        message: "not found",
+      })
+    } catch (e) {
+      next(e);
+    }
+  });
+
+  app.get('/tasks/:taskId', (req, res) => {
+    res.json({
+      ...req.task.toJSON(),
     })
-  }
-  catch (e) {
-    next({
-      status: 403,
-      message: e.message,
-    });
-  }
-});
+  });
 
-app.use((req, res, next) => {
-  return next({
-    status: 404,
-    message: 'not found',
-  })
-})
+  app.del('/tasks/:taskId', (req, res, next) => {
+    req.task.remove()
+       .then(() => {
+         res
+           .status(204)
+           .send();
+       })
+  });
 
-app.use((err, req, res, next) => {
-  res
-    .status(err.status || 500)
-    .json(err);
-});
+  app.patch('/tasks/:taskId', (req, res, next) => {
+    req.task.set({
+      text: req.body.text
+    }).save({new: true})
+       .then(task => {
+         res.json({
+           ...task.toJSON(),
+         })
+       })
+       .catch(next)
+  });
 
-app.listen(PORT, () => {
-  console.log('listening on port %s!', PORT)
-});
+  app.use((req, res, next) => {
+    return next({
+      status: 404,
+      message: 'not found',
+    })
+  });
+
+  app.use((err, req, res, next) => {
+    res
+      .status(err.status || 500)
+      .json(err);
+  });
+  return app;
+}
+
+module.exports = appFactory;

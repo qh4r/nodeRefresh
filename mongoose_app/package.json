@@ -2,15 +2,19 @@
   "name": "mongoose_app",
   "version": "1.0.0",
   "description": "",
-  "main": "./server/server.js",
+  "main": "./server/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./server/server.js"
+    "test": "jest",
+    "start": "node ./server/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.3",
     "mongoose": "^5.0.10"
+  },
+  "devDependencies": {
+    "jest": "^22.4.3",
+    "supertest": "^3.0.0"
   }
 }
