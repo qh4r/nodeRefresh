@@ -44,7 +44,6 @@ function appFactory() {
           message: "id is not valid",
         })
       }
-      ;
       const result = await Task.where({_id: taskId}).findOne();
       if (result) {
         req.task = result;
@@ -75,15 +74,50 @@ function appFactory() {
   });
 
   app.patch('/tasks/:taskId', (req, res, next) => {
-    req.task.set({
-      text: req.body.text
-    }).save({new: true})
+    if (req.body.text) {
+      req.task.set({
+        text: req.body.text
+      });
+    }
+
+    if (req.body.completed !== undefined) {
+      if(req.body.completed) {
+        req.task.set({
+          completed: true,
+          completedAt: new Date().getTime(),
+        })
+      } else {
+        req.task.set({
+          completed: false,
+          completedAt: null,
+        })
+      }
+    }
+
+    req.task.save({new: true})
        .then(task => {
          res.json({
            ...task.toJSON(),
          })
        })
-       .catch(next)
+       .catch(next);
+
+  });
+
+  // USERS
+  app.post('/users', (req, res, next) => {
+    const {email, password} = req.body;
+    const user = new User({email, password});
+    user
+      .save()
+      .then(result => res.json(result.toJSON()))
+      .catch(next);
+  });
+
+  app.get('/users', (req, res, next) => {
+    User.find({})
+      .then(result => res.json(result.map(x => x.toJSON())))
+      .catch(next);
   });
 
   app.use((req, res, next) => {
