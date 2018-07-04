@@ -64,7 +64,7 @@ function appFactory() {
     })
   });
 
-  app.del('/tasks/:taskId', (req, res, next) => {
+  app.delete('/tasks/:taskId', (req, res, next) => {
     req.task.remove()
        .then(() => {
          res
@@ -108,16 +108,24 @@ function appFactory() {
   app.post('/users', (req, res, next) => {
     const {email, password} = req.body;
     const user = new User({email, password});
+
     user
       .save()
-      .then(result => res.json(result.toJSON()))
+      .then(result => user.generateToken())
+      .then(token => {
+        res.header('x-auth', token).json(user)
+      })
       .catch(next);
   });
 
-  app.get('/users', (req, res, next) => {
+  app.get('/users', authenticate, (req, res, next) => {
     User.find({})
       .then(result => res.json(result.map(x => x.toJSON())))
       .catch(next);
+  });
+
+  app.get('/users/me', authenticate, (req, res, next) => {
+    res.json(req.user);
   });
 
   app.use((req, res, next) => {
@@ -133,6 +141,27 @@ function appFactory() {
       .json(err);
   });
   return app;
+}
+
+function authenticate(req, res, next) {
+  const token = req.header('x-auth');
+
+  User.findByToken(token)
+      .then(user => {
+        if(!user) {
+          return next({
+            status: 401,
+            message: "unauthorised"
+          });
+        }
+        req.user = user;
+        req.token = token;
+        next();
+      })
+      .catch(() => next({
+        status: 401,
+        message: "unauthorised"
+      }));
 }
 
 module.exports = appFactory;
