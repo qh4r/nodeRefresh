@@ -1,6 +1,7 @@
 const {SHA256} = require('crypto-js');
 const jwt = require('jsonwebtoken');
 const message = "test message";
+const bcrypt = require('bcryptjs');
 
 const hash = SHA256(message).toString(); //unsalted
 
@@ -22,3 +23,16 @@ console.log('token', token);
 
 const decoded = jwt.verify(token, secret); // will throw if token or secret was altered
 console.log('decoded', decoded);
+
+
+//bcrypt example
+
+const pass = "secretPass123asd";
+(async () => {
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(pass, salt);
+  console.log('hash ', hash);
+
+  const result = await bcrypt.compare(pass, hash); // true/false
+  console.log('result', result);
+})();
